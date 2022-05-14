@@ -1,37 +1,39 @@
 package hello.hellospirng.repository;
 
-import hello.hellospirng.domain.member;
+import hello.hellospirng.domain.Member;
 
 import java.util.*;
 
 public class MemoryMemberRepository implements MemberRepository{
-    private static Map<Long, member> store = new HashMap<>();
+    private static Map<Long, Member> store = new HashMap<>();
     private static long sequence = 0L;
+
     @Override
-    public member save(member member) {
+    public Member save(Member member) {
         member.setId(++sequence);
         store.put(member.getId(), member);
         return member;
     }
 
     @Override
-    public Optional<member> findById(Long id) {
+    public Optional<Member> findById(Long id) {
         return Optional.ofNullable(store.get(id));
     }
 
     @Override
-    public Optional<member> findByName(String name) {
+    public Optional<Member> findByName(String name) {
         return store.values().stream()
-                .filter(member -> member.getName().equals(name))
+                .filter(Member -> Member.getName().equals(name))
                 .findAny();
     }
 
     @Override
-    public List<member> findAll() {
+    public List<Member> findAll() {
         return new ArrayList<>(store.values());
     }
 
-    public void clearStore() {
+    public void clearStore() {  //테스트는 서로 의존관계없이 설정되어야함/그래서 한테스트후에 지워줘야함
         store.clear();
+        sequence=0L;
     }
 }
