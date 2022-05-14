@@ -36,4 +36,5 @@ public class MemoryMemberRepository implements MemberRepository{
         store.clear();
         sequence=0L;
     }
+
 }
